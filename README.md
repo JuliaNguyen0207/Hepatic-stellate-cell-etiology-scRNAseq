@@ -5,6 +5,17 @@
 [![PyDESeq2](https://img.shields.io/badge/PyDESeq2-Pseudobulk-2b83ba.svg)](https://pydeseq2.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+Official source code and reproducibility repository for the manuscript:
+
+> **A lineage-purified atlas of human hepatic stellate cells reveals a conserved four-state architecture and niche-specific reprogramming in hepatocellular carcinoma**  
+> **Authors:** Tran Thieu Duong Nguyen$^{1,3}$, Trinh Van Le$^{1,2,3,*}$  
+> $^1$ *Faculty of Biology and Biotechnology, University of Science, Ho Chi Minh City, 700000, Viet Nam*  
+> $^2$ *Laboratory of Regenerative Biomedicine, Faculty of Biology and Biotechnology, University of Science, Ho Chi Minh City, 700000, Viet Nam*  
+> $^3$ *Viet Nam National University, Ho Chi Minh City, 720325, Viet Nam*  
+> $*$ **Correspondence:** Dr Trinh Van Le (`lvtrinh@hcmus.edu.vn`; ORCID: `0000-0002-6763-7044`)
+
+---
+
 ## 1. Study Overview & Biological Motivation
 
 Hepatic stellate cells (HSCs) are the primary fibrogenic effector population in chronic liver disease (CLD) and furnish cancer-associated fibroblasts (CAFs) in hepatocellular carcinoma (HCC). However, cross-cohort single-cell syntheses of human HSCs have been hampered by three methodological bottlenecks:

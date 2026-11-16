@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, analytical workflow, or curated gene panels, please cite the associated manuscript and repository as below."
+title: "A lineage-purified atlas of human hepatic stellate cells reveals a conserved four-state architecture and niche-specific reprogramming in hepatocellular carcinoma"
+type: software
+authors:
+  - family-names: "Nguyen"
+    given-names: "Tran Thieu Duong"
+    affiliation: "Faculty of Biology and Biotechnology, University of Science, Viet Nam National University, Ho Chi Minh City, Viet Nam"
+  - family-names: "Le"
+    given-names: "Trinh Van"
+    email: "lvtrinh@hcmus.edu.vn"
+    orcid: "https://orcid.org/0000-0002-6763-7044"
+    affiliation: "Laboratory of Regenerative Biomedicine, Faculty of Biology and Biotechnology, University of Science, Viet Nam National University, Ho Chi Minh City, Viet Nam"
+repository-code: "https://github.com/JuliaNguyen0207/Hepatic-stellate-cell-etiology-scRNAseq"
+keywords:
+  - hepatic stellate cells
+  - hepatocellular carcinoma
+  - liver cirrhosis
+  - single-cell RNA sequencing
+  - tumour microenvironment
+  - hepatitis B virus
+  - pseudobulk differential expression
+license: MIT
