@@ -1,13 +1,3 @@
-"""
-Centralized configuration, portable path resolver, publication palettes,
-and locked gene signature panels for the Human Hepatic Stellate Cell Atlas.
-
-All parameters in this module strictly match the Methods and Supplementary Methods
-of Nguyen & Le ("A lineage-purified atlas of human hepatic stellate cells reveals
-a conserved four-state architecture and niche-specific reprogramming in
-hepatocellular carcinoma").
-"""
-
 import os
 from pathlib import Path
 from typing import Dict, List
