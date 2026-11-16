@@ -1,71 +1,71 @@
-# Code & Analysis for: "Etiology specific activation programs of hepatic stellate cells revealed by integrated single-cell RNA-seq across human liver diseases"
-## Overview
+A Lineage-Purified Atlas of Human Hepatic Stellate Cells Reveals a Conserved Four-State Architecture and Niche-Specific Reprogramming in Hepatocellular CarcinomaOfficial source code and reproducibility repository for the manuscript:A lineage-purified atlas of human hepatic stellate cells reveals a conserved four-state architecture and niche-specific reprogramming in hepatocellular carcinomaAuthors: Tran Thieu Duong Nguyen$^{1,3}$, Trinh Van Le$^{1,2,3,}$$^1$ Faculty of Biology and Biotechnology, University of Science, Ho Chi Minh City, 700000, Viet Nam$^2$ Laboratory of Regenerative Biomedicine, Faculty of Biology and Biotechnology, University of Science, Ho Chi Minh City, 700000, Viet Nam$^3$ Viet Nam National University, Ho Chi Minh City, 720325, Viet Nam$$ Correspondence: Dr Trinh Van Le (lvtrinh@hcmus.edu.vn; ORCID: 0000-0002-6763-7044)1. Study Overview & Biological MotivationHepatic stellate cells (HSCs) are the primary fibrogenic effector population in chronic liver disease (CLD) and furnish cancer-associated fibroblasts (CAFs) in hepatocellular carcinoma (HCC). However, cross-cohort single-cell syntheses of human HSCs have been hampered by three methodological bottlenecks:Lineage Contamination: Activated HSCs share contractile and extracellular matrix (ECM) transcripts (ACTA2, PDGFRB, COL1A1) with vascular smooth muscle cells (VSMCs), pericytes, portal fibroblasts (PFs), and mesothelial cells.Batch Confounding: Cross-dataset integration without shared healthy reference anchors risks distorting biological state neighbourhoods.Single-Cell Pseudoreplication: Treating individual cells rather than biological specimens/donors as independent statistical units inflates false discovery rates in differential expression and compositional testing.This repository implements a two-stage, de-confounded bioinformatic framework across four human liver 10x Genomics Chromium 3' scRNA-seq cohorts (14,237,561 raw droplet barcodes across 53 libraries $\rightarrow$ 494,560 quality-controlled singlets $\rightarrow$ 9,185 pan-liver mesenchymal cells $\rightarrow$ 5,728 high-purity HSCs across N = 34 biological samples from 28 unique donors and 42 libraries).2. Two-Stage Analytical ArchitectureSTAGE 1: INDEPENDENT PER-COHORT PROCESSING & TWO-STAGE LINEAGE PURIFICATION
+  ├── Input: 4 Public 10x 3' scRNA-seq Cohorts (GSE136103, GSE243977, GSE282701, GSE166635)
+  ├── 3-Tier Replicate Hierarchy: Unique Donor (n=28) -> Biological Sample (N=34) -> Library (n=42)
+  ├── Per-Library QC & Scrublet: Detected genes >= 200, <= 99.5% quantile cap, MT <= 20.0% (494,560 singlets)
+  ├── Tier 1 (Pan-Liver Mesenchymal Extraction): Leiden (res=0.8) + 6-lineage Z-scoring (9,185 mesenchymal cells)
+  └── Tier 2 (Reciprocal Z-Score Gating): Purge VSMC/Pericyte (n=1,396), Portal Fibroblast (n=903), Mesothelial,
+      and apply hard zero-UMI lock (PTPRC = 0, EPCAM = 0) + sample size filter (>=10 HSCs; paired HCC >=6)
+      ===> OUTPUT: 5,728 High-Purity HSCs across N = 34 Biological Samples (28 Unique Donors)
 
-This repository contains the code used for the single-cell RNA sequencing (scRNA-seq) analysis presented in our study of hepatic stellate cells (HSCs) across healthy, fibrotic, viral, cholestatic, and tumor-associated human liver microenvironments.
-
-The workflow integrates three public human liver scRNA-seq datasets:
-
-- **GSE136103**: healthy and cirrhotic liver reference atlas
-- **GSE282701**: HBV-positive and HBV-negative hepatocellular carcinoma microenvironment
-- **GSE166635**: primary liver cancer heterogeneity
-
-The analysis was designed to:
-1. preprocess each dataset in a consistent framework,
-2. construct a global liver atlas,
-3. identify and subset hepatic stellate cells,
-4. integrate the HSC compartment across cohorts,
-5. annotate HSC states,
-6. perform comparative downstream analysis across etiologies.
-
----
-
-## System Requirements
-
-- Python 3.10+
-- Colab Notebook or command-line Python environment
-- Recommended RAM: 32 GB or higher
-- GPU is **not required**, but may help with large-scale computation and visualization
-
-Install dependencies with:
-
-```bash
-pip install -r requirements.txt
-```
----
-
-# Repository structure
-```bash
-.
-├── code/
-│   ├── 01_preprocess_all_datasets.py
-│   ├── 02_integrate_hsc_atlas.py
-│   ├── 03_downstream_analysis.py
-│   └── 04_visualization_and_export.py
-│
+STAGE 2: HEALTHY-ANCHORED INTEGRATION & DE-CONFOUNDED DOWNSTREAM ANALYSIS
+  ├── Artefact Masking & HVG Selection: Mask MT/RPL/RPS/HSP/dissociation/ambient hepatocyte genes -> 2,500 Seurat v3 HVGs
+  ├── Healthy-Anchored Harmony Integration (theta = 2.0): Anchored by 17 healthy liver samples (1,978 HSCs)
+  ├── 30-D Quantitative Benchmarking: Global iLISI (1.000 -> 2.136, P = 1.16e-10), Unbiased cLISI (P = 0.427, NS)
+  ├── Conserved 4-State Resolution: qHSC (+1.11), A1 (+1.05), A2 (+0.76), INF (+0.81); 92.91% Pre/Post agreement (kappa = 0.904)
+  ├── Sample-Level Compositional Testing (N = 34): Kruskal-Wallis, Mann-Whitney U, Leave-P15-Out (N=32), Paired Wilcoxon (n=6)
+  ├── De-Confounded Donor Pseudobulk DEA (PyDESeq2): 6 within-cohort contrasts + A2-proportion covariate control (711 DEGs)
+  ├── Pathway & Purity Audits: Preranked MSigDB Hallmark GSEA (1,000 perms) + Pan-state HBV+ ISG & non-A2 ECM audits
+  └── Undirected PAGA Topology: 50x bootstrap stability (80% subsample) + 30x density-controlled subsampling (N=250/compartment)
+3. Curated GEO Cohorts & Replicate HierarchyAll datasets analysed in this study are publicly available from the NCBI Gene Expression Omnibus (GEO):GEO AccessionReferenceTissue Compartment (tissue_context)Clinical Condition (condition_group)Initial Libraries (n)Post-QC Singlets (n)Tier-1 Mesenchymal (n)Retained Donors (n)Retained Bio Samples (N)Retained Libraries (n)Final Purified HSCs (n)GSE136103Ramachandran et al.NonTumor_LiverHealthy (3), Alcohol (2), NAFLD (1)2059,3322,29766141,380GSE243977Andrews et al.NonTumor_LiverHealthy19291,2291,5871414141,008GSE282701Patient-Paired HCCAdjacent_Liver & Tumor_CoreHBV_neg_Adjacent (3), HBV_pos_Adjacent (3), HBV_neg_Tumor (3), HBV_pos_Tumor (3)12125,9674,9826 (paired)12123,142GSE166635Meng et al.Tumor_CoreHCC_Tumor218,032319222198Total Atlas10x Chromium 3'3 Compartments8 Condition Groups53494,5609,18528 unique34425,728Note on Sample Filtering: Stage-1 cohort gating initially identified 1,396 HSCs in GSE136103 and 1,280 HSCs in GSE243977 (1,025 healthy + 255 excluded PSC cells) (see Supplementary Table S1A & Supplementary Fig. S3). Excluding 6 unpaired biological samples with < 10 HSCs (healthy4, healthy5, cirrhotic4 in GSE136103; C59, C66, C69 in GSE243977; totalling 33 cells) yielded 5,728 HSCs across N = 34 biological samples.4. Repository StructureHepatic-stellate-cell-etiology-scRNAseq/
+├── README.md                                  # Study overview, workflow mapping, and execution instructions
+├── .gitignore                                 # Excludes large raw matrices, .h5ad binaries, and local caches
+├── CITATION.cff                               # Bibliographic citation metadata
+├── LICENSE                                    # MIT Open-Source License
+├── Makefile                                   # Automation commands for environment setup and data download
+├── environment.yml                            # Reproducible Conda environment specification (Python 3.10)
+├── requirements.txt                           # Pinned Python package dependencies
+├── scripts/
+│   └── download_geo_data.sh                   # Automated NCBI GEO downloader and archive extractor
+├── src/
+│   ├── __init__.py
+│   └── hsc_atlas_config.py                    # Centralised relative paths, BMJ palettes, regex, and gene panels
 ├── data/
-│   ├── raw/
-│   │   ├── GSE136103/
-│   │   ├── GSE282701/
-│   │   └── GSE166635/
-│   ├── processed/
-│   └── metadata/
-│
-├── results/
-│   ├── figures/
-│   ├── tables/
-│   └── ppi_input/
-│
-├── requirements.txt
-└── README.md
-```
-## Datasets
+│   ├── README_DATA.md                         # Documentation of GEO input files and 3-tier metadata schema
+│   ├── raw/                                   # [Git-ignored] Raw 10x matrices downloaded from NCBI GEO
+│   ├── processed_hsc/                         # [Git-ignored] Stage-1 purified per-cohort .h5ad objects
+│   └── metadata/                              # Curated per-cohort sample sheets (.csv)
+├── notebooks/
+│   ├── stage1_cohort_purification/            # Independent per-cohort QC, Scrublet & 2-tier reciprocal gating
+│   │   ├── 01_GSE136103_HSC_purification.ipynb
+│   │   ├── 02_GSE243977_HSC_purification.ipynb
+│   │   ├── 03_GSE282701_HSC_purification.ipynb
+│   │   └── 04_GSE166635_HSC_purification.ipynb
+│   └── stage2_integrated_atlas/               # Healthy-anchored Harmony, 4-state scoring, PyDESeq2, GSEA & PAGA
+│       └── 05_Integrated_HSC_Atlas_Analysis.ipynb
+└── results/
+    ├── tables/                                # Generated CSV tables corresponding to Manuscript & Supplementary Tables
+    └── figures/                               # Publication-ready vector PDFs and 300 DPI PNG figures
+5. Manuscript-to-Code MappingEvery figure and table reported in the manuscript and supplementary materials is directly traceable to the notebooks in this repository:Manuscript Display ItemDescriptionSource NotebookOutput File Path (results/)Table 1 & Supp. Table S1ACohort characteristics, QC funnel, and biological replicate audit ($N=34$, $n=5,728$)01–04 & 05tables/Table1_Cohort_Biological_Replicate_Audit.csvFigure 2 & Table 2 / Supp. Table S1CPre-/Post-Harmony UMAPs and 30-D LISI / ASW integration benchmarks05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig2_Harmony_Integration_and_LISI_Benchmark.pdftables/Table2_Rigorous_Integration_Benchmark.csvFigure 3 & Supp. Table S1BConserved 4-state UMAP (qHSC, A1, A2, INF), program matrix, lineage purity heatmap & dotplot; stringent gating audit ($n=4,055$)05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig3_Conserved_Four_States_and_Purity_Audit.pdftables/Supplementary_TableS1B_Gating_Sensitivity_Audit.csvFigure 4 & Supp. Table S2 (A–C)Sample-level HSC state composition ($N=34$) and non-parametric hypothesis testing05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig4_Sample_Level_HSC_Composition.pdftables/Table3_Sample_Level_HSC_Composition_N34_Verified.csvtables/Table3B_Composition_Statistical_Tests.csvFigure 5 & Supp. Table S3ADe-confounded donor-level pseudobulk PyDESeq2 volcano plots across 6 within-cohort contrasts + prop_A2 covariate control05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig5_Deconfounded_Pseudobulk_Volcano_Plots.pdftables/Table4_Pseudobulk_PyDESeq2_Rigorous_Deconfounded.csvtables/Supplementary_TableS4_PyDESeq2_ControlledFor_PropA2.csvFigure 6A & Supp. Table S4BPreranked MSigDB Hallmark GSEA Normalized Enrichment Score (NES) heatmap across 6 contrasts05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig6A_Pseudobulk_GSEA_Hallmark_Heatmap.pdftables/Table5_Pseudobulk_GSEA_Hallmark_Pathways.csvFigure 6B–C, Supp. Fig. S1 & Supp. Table S4AUndirected PAGA connectivity graph, 50-run bootstrap stability, and 30-run density-controlled subsampling ($N=250$/compartment)05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Fig6BC_Undirected_PAGA_and_Bootstrap_Stability.pdffigures/Supplementary_FigS1_Density_Controlled_Tissue_PAGA.pdftables/Supplementary_TableS1_Density_Controlled_Tissue_PAGA.csvSupp. Fig. S2 & Supp. Table S3B–CCell-count-invariant within-state (qHSC + A1) paired ECM audit & pan-state HBV+ ISG purity heatmap05_Integrated_HSC_Atlas_Analysis.ipynbfigures/Supplementary_FigS2_Intrinsic_Reprogramming_and_HBV_Purity.pdftables/Supplementary_TableS3_CellCount_Invariant_WithinState_Audit.csvtables/Supplementary_TableS5_HBV_ISG_Purity_Across_States.csvSupp. Fig. S3 (A–D)Stage-1 cohort-independent reciprocal gating and pre-integration four-state resolution01–04 (stage1_cohort_purification/)figures/Supplementary_FigS3_Cohort_Independent_Purification.pdf6. Installation & Reproducibility GuideStep 1: Clone the Repository & Create the Conda Environmentgit clone https://github.com/JuliaNguyen0207/Hepatic-stellate-cell-etiology-scRNAseq.git
+cd Hepatic-stellate-cell-etiology-scRNAseq
 
-Publicly available human liver scRNA-seq datasets were retrieved from the NCBI Gene Expression Omnibus (GEO):___
+# Create and activate the reproducible Conda environment (Python 3.10)
+conda env create -f environment.yml
+conda activate hsc-atlas-bmj
+Step 2: Download Raw GEO Datasets
 
-GSE136103
-GSE282701
-GSE166635
+Run the automated download script to fetch the supplementary 10x Genomics count matrices from NCBI GEO into data/raw/:
 
-Please download the raw matrices and place them in the corresponding folders under:
-```bash
-data/raw/
+bash scripts/download_geo_data.sh
+
+
+(See data/README_DATA.md for detailed file structures, MD5/size checks, and manual download instructions if behind an institutional firewall).
+
+Step 3: Execute the Analytical Pipeline
+
+Stage 1 (Per-Cohort Purification): Execute notebooks 01 through 04 inside notebooks/stage1_cohort_purification/ to reproduce quality control, per-library Scrublet doublet removal, and two-stage reciprocal HSC isolation. Purified AnnData objects (*_HSC_clean.h5ad) are saved to data/processed_hsc/.
+
+Stage 2 (Integrated Atlas & De-Confounded Modelling): Execute notebooks/stage2_integrated_atlas/05_Integrated_HSC_Atlas_Analysis.ipynb to reproduce the 5,728-cell integrated atlas, LISI/ASW benchmarks, sample-level statistics, PyDESeq2 models, Hallmark GSEA, and PAGA topology.
+
+7. License & Citation
+
+This code is made available under the MIT License (see LICENSE). If you use this pipeline, curated gene signatures, or the integrated human HSC atlas in your research, please cite our manuscript (see CITATION.cff).
