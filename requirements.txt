@@ -1,5 +1,4 @@
 # ==============================================================================
-# Pinned Python 3.10 dependencies for non-Conda (venv / Docker) installations
 # Note: If using Conda, prefer `conda env create -f environment.yml`
 # ==============================================================================
 numpy==1.24.4
