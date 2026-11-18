@@ -51,7 +51,7 @@ All datasets analysed in this study are publicly available from the NCBI Gene Ex
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **GSE136103** | Ramachandran *et al.* | `NonTumor_Liver` | `Healthy` (3), `Alcohol` (2), `NAFLD` (1) | 20 | 59,332 | 2,297 | 6 | 6 | 14 | **1,380** |
 | **GSE243977** | Andrews *et al.* | `NonTumor_Liver` | `Healthy` | 19 | 291,229 | 1,587 | 14 | 14 | 14 | **1,008** |
-| **GSE282701** | Patient-Paired HCC | `Adjacent_Liver` & `Tumor_Core` | `HBV_neg_Adjacent` (3), `HBV_pos_Adjacent` (3), `HBV_neg_Tumor` (3), `HBV_pos_Tumor` (3) | 12 | 125,967 | 4,982 | 6 (paired) | 12 | 12 | **3,142** |
+| **GSE282701** |  Ke Liu *et al.* | `Adjacent_Liver` & `Tumor_Core` | `HBV_neg_Adjacent` (3), `HBV_pos_Adjacent` (3), `HBV_neg_Tumor` (3), `HBV_pos_Tumor` (3) | 12 | 125,967 | 4,982 | 6 (paired) | 12 | 12 | **3,142** |
 | **GSE166635** | Meng *et al.* | `Tumor_Core` | `HCC_Tumor` | 2 | 18,032 | 319 | 2 | 2 | 2 | **198** |
 | **Total Atlas** | **10x Chromium 3'** | **3 Compartments** | **8 Condition Groups** | **53** | **494,560** | **9,185** | **28 unique** | **34** | **42** | **5,728** |
 
